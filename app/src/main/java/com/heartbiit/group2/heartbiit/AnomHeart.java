@@ -6,7 +6,7 @@ package com.heartbiit.group2.heartbiit;
 public class AnomHeart implements Runnable {
     private int avgBpm;
     private int threshold;
-    private int hrmax;
+    private double hrmax;
     public int active;
 
     public void run() {
@@ -19,10 +19,10 @@ public class AnomHeart implements Runnable {
     }
 
     public void initHrmax(int age, boolean gender) {
-        int oakland = (double) 191.5 - (0.007 * age * age);
-        int robland = (double) 205.8 - (0.685 * age);
-        int gulatiFemale = (double) 206 - (0.88 * age);
-        int gellishMale = 203.7 / (1 + exp(0.033 * (age - 104.3))); //Cast Double?
+        double oakland = 191.5 - (0.007 * age * age);
+        double robland = (double) 205.8 - (0.685 * age);
+        double gulatiFemale = (double) 206 - (0.88 * age);
+        double gellishMale = 203.7 / (1 + java.lang.Math.exp(0.033 * (age - 104.3))); //Cast Double?
 
         if (gender) { //Male
             hrmax = (oakland + robland + gellishMale) / 3;
