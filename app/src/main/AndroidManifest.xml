@@ -18,7 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".FailSafeActivity"
+            android:label="@string/title_activity_fail_safe" >
+        </activity>
     </application>
 
 </manifest>

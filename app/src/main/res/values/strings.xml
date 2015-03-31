@@ -3,4 +3,8 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="submit_button">Submit</string>
+    <string name="radio_male">Male</string>
+    <string name="radio_female">Female</string>
+    <string name="title_activity_fail_safe">FailSafeActivity</string>
 </resources>

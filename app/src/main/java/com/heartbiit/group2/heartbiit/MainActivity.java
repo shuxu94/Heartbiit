@@ -1,5 +1,6 @@
 package com.heartbiit.group2.heartbiit;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,14 +8,23 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.RadioButton;
+
 
 
 public class MainActivity extends ActionBarActivity {
+
+    boolean male;
+    AnomHeart detector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main); // testing
+
+        detector = new AnomHeart(this);
+
     }
 
 
@@ -26,9 +36,45 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void callButton(View view) {
+        callTest(this);
+
+    }
+
+    public static void callTest(Context c) {
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:7324477512"));
-        startActivity(intent);
+        c.startActivity(intent);
+    }
+
+    public void getUserInfo(View view) {
+        int userAge;
+        EditText mEdit = (EditText)findViewById(R.id.editText);
+        userAge = Integer.parseInt(mEdit.getText().toString());
+        mEdit.getText().clear();
+        detector.initHrmax(userAge, male);
+        detector.initHeartRate();
+
+        (new Thread(detector)).start();
+
+    }
+
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radio_male:
+                if (checked)
+                    // Pirates are the best
+                    male = true;
+                    break;
+            case R.id.radio_female:
+                if (checked)
+                    // Ninjas rule
+                    male = false;
+                    break;
+        }
     }
 
     @Override
