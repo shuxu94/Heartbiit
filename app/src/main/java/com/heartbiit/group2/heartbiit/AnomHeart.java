@@ -1,8 +1,15 @@
 package com.heartbiit.group2.heartbiit;
 
+import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.CountDownTimer;
+import android.support.v4.app.NotificationCompat;
 
 import java.util.Random;
 
@@ -21,6 +28,73 @@ public class AnomHeart implements Runnable {
         active = true;
     }
 
+    public void createNotification() {
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(mcontext)
+                        .setContentTitle("CALLING EMERGENCY SERVICE")
+                        .setContentText("SWIPE TO CANCEL");
+        // Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(mcontext, MainActivity.class);
+
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(mcontext);
+        // Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(MainActivity.class);
+        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) mcontext.getSystemService(Context.NOTIFICATION_SERVICE);
+        // mId allows you to update the notification later on.
+        int mId = 001;
+        mNotificationManager.notify(mId, mBuilder.build());
+    }
+
+    public void createDialogue() {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(mcontext);
+        builder1.setMessage("Calling Emergency Services in 4 Seconds");
+        builder1.setCancelable(true);
+        /*builder1.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });*/
+        builder1.setNegativeButton("Cancel Call",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        final AlertDialog alert11 = builder1.create();
+        alert11.show();
+
+        new CountDownTimer(10000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                alert11.setMessage("Calling Emergency in "+ (millisUntilFinished/1000) + " Seconds");
+            }
+
+            @Override
+            public void onFinish() {
+                //info.setVisibility(View.GONE);
+                //callTest(this);
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                intent.setData(Uri.parse("tel:7324477512"));
+                mcontext.startActivity(intent);
+            }
+        }.start();
+    }
+
     public void run() {
 
         while(active) {
@@ -31,13 +105,15 @@ public class AnomHeart implements Runnable {
 
             if ((heartAnom(hr, false) > 0)) {
 
-                Intent intent = new Intent(Intent.ACTION_CALL);
+                /*Intent intent = new Intent(Intent.ACTION_CALL);
                 intent.setData(Uri.parse("tel:7324477512"));
-                mcontext.startActivity(intent);
+                mcontext.startActivity(intent);*/
 
                 /*
                 Intent intent = new Intent(mcontext, FailSafeActivity.class);
                 mcontext.startActivity(intent); */
+                //this.createNotification();
+                //this.createDialogue();
 
 
 
@@ -87,7 +163,7 @@ public class AnomHeart implements Runnable {
     }
 
     public int getHR() {
-        int max = 110;
+        int max = 101;
         int min = 50;
         Random r = new Random();
         int randomNum = r.nextInt((max - min) + 1) + min;

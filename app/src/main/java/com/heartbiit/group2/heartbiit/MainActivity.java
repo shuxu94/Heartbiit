@@ -1,16 +1,18 @@
 package com.heartbiit.group2.heartbiit;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
-
 
 
 public class MainActivity extends ActionBarActivity {
@@ -28,6 +30,48 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
+    public void createDialogue() {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage("Calling Emergency Services in 4 Seconds");
+        builder1.setCancelable(true);
+        /*builder1.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });*/
+        builder1.setNegativeButton("Cancel Call",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        final AlertDialog alert11 = builder1.create();
+        alert11.show();
+
+        new CountDownTimer(10000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                alert11.setMessage("Calling Emergency in "+ (millisUntilFinished/1000) + " Seconds");
+            }
+
+            @Override
+            public void onFinish() {
+                //info.setVisibility(View.GONE);
+                //callTest(this);
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                intent.setData(Uri.parse("tel:7324477512"));
+                startActivity(intent);
+            }
+        }.start();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -36,7 +80,8 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void callButton(View view) {
-        callTest(this);
+        //callTest(this);
+        createDialogue();
 
     }
 
@@ -76,6 +121,8 @@ public class MainActivity extends ActionBarActivity {
                     break;
         }
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
