@@ -23,10 +23,19 @@ public class AnomHeart implements Runnable {
     public boolean active;
     Context mcontext;
 
+    /**
+     * This is the Constructor or our class
+     * @param c The activity context
+     */
+
     public AnomHeart(Context c) {
         mcontext = c;
         active = true;
     }
+
+    /**
+     * This method creates notifications for our Failsafe mechanism
+     */
 
     public void createNotification() {
         NotificationCompat.Builder mBuilder =
@@ -57,6 +66,10 @@ public class AnomHeart implements Runnable {
         int mId = 001;
         mNotificationManager.notify(mId, mBuilder.build());
     }
+
+    /**
+     * This method creates dialogues for our countdown to contact Emergency Services
+     */
 
     public void createDialogue() {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(mcontext);
@@ -95,10 +108,14 @@ public class AnomHeart implements Runnable {
         }.start();
     }
 
+    /**
+     * Starts the systems process and gets the heart rate to print to console
+     */
+
     public void run() {
 
         while(active) {
-            System.out.println("Start anonmoly shit");
+            System.out.println("Start anonmoly");
             int hr = getHR();
 
             System.out.println("Start running :" + hr + "\n");
@@ -123,11 +140,19 @@ public class AnomHeart implements Runnable {
         }
     }
 
+    /**
+     * Initializes the user's heart rate
+     */
     public void initHeartRate() {
         //initialize resting heart rate
         avgBpm = 60;
     }
 
+    /**
+     * Calculate the maximum heart rate with various algorithms discussed based on age and gender
+     * @param age The age of the user
+     * @param gender The gender of the user (true == boy/false == girl)
+     */
     public void initHrmax(int age, boolean gender) {
         double oakland = 191.5 - (0.007 * age * age);
         double robland = 205.8 - (0.685 * age);
@@ -141,6 +166,14 @@ public class AnomHeart implements Runnable {
         }
     }
 
+    /**
+     * The main algorithm for detecting arrythmia for exercise/resting brachycardia/tachycardia
+     * @param bpm Beats per Minute!!
+     * @param exercise True if the user is exercising, and false if the user is resting
+     * @return Returns an integer for the different possible outcomes 0 = No Anomaly,
+     * 1 = Exercise Tachycardia, 2 = Exercise Brachycardia,
+     * 3 = Resting Tachycardia, 4 = Resting Brachycardia
+     */
     public int heartAnom(int bpm, boolean exercise) {
         if (exercise) {
             if (bpm > hrmax) {
@@ -161,6 +194,11 @@ public class AnomHeart implements Runnable {
             }
         }
     }
+
+    /**
+     * Method to get user's heart rate
+     * @return Returns the user's heart rate (From Fitbit)
+     */
 
     public int getHR() {
         int max = 101;

@@ -29,7 +29,9 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-
+    /**
+     * Method that creates dialogue for calling emergency services
+     */
     public void createDialogue() {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setMessage("Calling Emergency Services in 4 Seconds");
@@ -79,17 +81,32 @@ public class MainActivity extends ActionBarActivity {
         return true;
     }
 
+    /**
+     * Creates the call button
+     * @param view The view that's called by the system
+     */
+
     public void callButton(View view) {
         //callTest(this);
         createDialogue();
 
     }
 
+    /**
+     * Calls the number inputted
+     * @param c Context!
+     */
+
     public static void callTest(Context c) {
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:7324477512"));
         c.startActivity(intent);
     }
+
+    /**
+     * Displays the view for entering user information
+     * @param view Current View
+     */
 
     public void getUserInfo(View view) {
         int userAge;
@@ -102,6 +119,11 @@ public class MainActivity extends ActionBarActivity {
         (new Thread(detector)).start();
 
     }
+
+    /**
+     * Creates the button for the user to select gender
+     * @param view Current View
+     */
 
     public void onRadioButtonClicked(View view) {
         // Is the button now checked?
