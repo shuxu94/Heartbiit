@@ -1,6 +1,7 @@
 package com.heartbiit.group2.heartbiit;
 
 import android.test.ActivityUnitTestCase;
+import android.test.UiThreadTest;
 import android.widget.Button;
 
 /**
@@ -25,6 +26,27 @@ public class MainActivityTest extends ActivityUnitTestCase{
         submitButton = (Button) mAct.findViewById(R.id.submit_button);
         callButton = (Button) mAct.findViewById(R.id.button);
 
+    }
+    @UiThreadTest
+    public void testSubmitButton() {
+        mAct.runOnUiThread(
+            new Runnable() {
+                public void run() {
+                    submitButton.performClick();
+                }
+            }
+        );
+    }
+
+    @UiThreadTest
+    public void testCallButton() {
+        mAct.runOnUiThread(
+                new Runnable() {
+                    public void run() {
+                        callButton.performClick();
+                    }
+                }
+        );
     }
 
     @Override
