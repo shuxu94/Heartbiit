@@ -19,6 +19,7 @@ public class MainActivity extends ActionBarActivity {
 
     boolean male;
     AnomHeart detector;
+    FitbitData fitbitData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +27,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main); // testing
 
         detector = new AnomHeart(this);
-
+        //(new FitbitTask()).execute();
     }
 
     /**
